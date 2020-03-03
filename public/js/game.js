@@ -1,15 +1,14 @@
-const sourceColors = [
-  '#ff2121',
-  '#a24040',
-  '#2828f1',
-  '#f5a106',
-  '#08d208',
-  '#7b0a7b',
-  '#eaea0e',
-  '#f952f9'
-];
-
-// ['red', 'brown', 'blue', 'orange', 'green', 'purple', 'yellow', 'pink'];
+const sendXHR = function(method, url, callback, message = '') {
+  const req = new XMLHttpRequest();
+  req.onload = function() {
+    if (this.status === 200) {
+      callback(JSON.parse(this.responseText));
+    }
+  };
+  req.open(method, url);
+  method === 'POST' && req.setRequestHeader('Content-type', 'application/json');
+  req.send(message);
+};
 
 const getDIvTemplate = function(classes, id) {
   const template = `<div class="${classes.join(' ')}" id="${id}"></div>`;
@@ -59,7 +58,7 @@ const main = function() {
   generateTemplate('#placeholder', 'rows', 'hole');
   generateTemplate('#feedback', 'result', 'result-place');
   makeRowActive(1);
-  generateSourceColor(sourceColors);
+  sendXHR('GET', 'sourceColor', generateSourceColor);
 };
 
 window.onload = main;
