@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>master mind</title>
+    <link rel="stylesheet" href="./css/game.css" />
+    <script src="./js/game.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="playBoard">
+        <div id="placeholder">
+          <div class="rows code-row">
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+            <div class="hole"></div>
+          </div>
+        </div>
+        <div id="feedback"></div>
+      </div>
+      <div id="statusBoard">
+        <h1>MASTERMIND</h1>
+        <div id="instruction">
+          <p>
+            Select the colors from bottom and place wherever you want to place
+            on the left part of the game board in the active row. If you are
+            done with placing the color click the check button.
+          </p>
+          <p>The result of your prediction will shown as described below</p>
+          <p>
+            <span style="color: red;">Red</span> color indicate the color placed
+            in right position.
+          </p>
+          <p>
+            <span style="color: white;">White</span> color indicate the color
+            placed is present, but not in the right position.
+          </p>
+          <p>
+            <strong> Note:</strong> these do not line up with your code color.
+          </p>
+        </div>
+        <button>Check</button>
+        <div id="source-place"></div>
+      </div>
+    </div>
+  </body>
+</html>
