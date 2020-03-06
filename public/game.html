@@ -12,12 +12,12 @@
     <div id="container">
       <div id="playBoard">
         <div id="placeholder">
-          <div class="rows code-row">
-            <div class="hole"></div>
-            <div class="hole"></div>
-            <div class="hole"></div>
-            <div class="hole"></div>
-            <div class="hole"></div>
+          <div class="rows code-row inactive">
+            <div class="hole inactive"></div>
+            <div class="hole inactive"></div>
+            <div class="hole inactive"></div>
+            <div class="hole inactive"></div>
+            <div class="hole inactive"></div>
           </div>
         </div>
         <div id="feedback"></div>
@@ -43,7 +43,11 @@
             <strong> Note:</strong> these do not line up with your code color.
           </p>
         </div>
-        <button>Check</button>
+        <div class="hide" id="quiteWindow">
+          <p>You won..!</p>
+          <button>Play Again</button>
+        </div>
+        <button onclick="submitColors()" id="check">Check</button>
         <div id="source-place"></div>
       </div>
     </div>

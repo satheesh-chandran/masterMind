@@ -23,7 +23,7 @@ describe('GET', function() {
       request(app)
         .get('/js/game.js')
         .expect('Content-Type', /javascript/)
-        .expect(/getDIvTemplate/)
+        .expect(/getDivTemplate/)
         .expect(200, done);
     });
   });

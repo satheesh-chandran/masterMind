@@ -1,16 +1,36 @@
-const sourceColors = [
-  '#ff2121',
-  '#a24040',
-  '#2828f1',
-  '#f5a106',
-  '#08d208',
-  '#7b0a7b',
-  '#eaea0e',
-  '#f952f9'
-];
+const crypto = require('crypto');
+const { Games } = require('./games');
 
-// ['red', 'brown', 'blue', 'orange', 'green', 'purple', 'yellow', 'pink'];
+const games = new Games();
 
-const provideSourceColor = (req, res) => res.json(sourceColors);
+const idProvider = () =>
+  crypto
+    .createHash('sha1')
+    .update(`${+new Date()}`)
+    .digest('hex')
+    .slice(0, 10);
 
-module.exports = { provideSourceColor };
+const provideSourceColor = (req, res) => {
+  const sessionId = idProvider();
+  res.cookie('session', sessionId);
+  games.add(sessionId);
+  res.json(games.getColors());
+};
+
+const redirectionToStart = function(req, res, next) {
+  const { session } = req.cookies;
+  if (!session) return res.redirect('/');
+  next();
+};
+
+const checkColors = function(req, res) {
+  const { session } = req.cookies;
+  const { colors } = req.body;
+  res.json(games.checkColors(session, colors));
+};
+
+module.exports = {
+  provideSourceColor,
+  redirectionToStart,
+  checkColors
+};

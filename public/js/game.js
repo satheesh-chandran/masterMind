@@ -1,3 +1,7 @@
+let selectedColor = 'white';
+const winMessage = 'Congrats You won the Game ..!';
+const lossMessage = 'Oops... You Lost';
+
 const sendXHR = function(method, url, callback, message = '') {
   const req = new XMLHttpRequest();
   req.onload = function() {
@@ -10,8 +14,8 @@ const sendXHR = function(method, url, callback, message = '') {
   req.send(message);
 };
 
-const getDIvTemplate = function(classes, id) {
-  const template = `<div class="${classes.join(' ')}" id="${id}"></div>`;
+const getDivTemplate = function(childClass, id) {
+  const template = `<div class="${childClass}" id="${id}"></div>`;
   const temp = document.createElement('div');
   temp.innerHTML = template;
   return temp.firstChild;
@@ -21,7 +25,9 @@ const generateChildTemplate = function(rowNum, childClass) {
   const holes = [];
   for (let divNum = 1; divNum < 6; divNum++) {
     const id = `${childClass}_${rowNum}_${divNum}`;
-    holes.push(getDIvTemplate([childClass, 'inactive'], id));
+    const divTemplate = getDivTemplate(childClass, id);
+    divTemplate.onclick = applySelectedColor;
+    holes.push(divTemplate);
   }
   return holes;
 };
@@ -31,6 +37,7 @@ const generateTemplate = function(divID, parentClass, childClass) {
   for (let rowNum = 10; rowNum > 0; rowNum--) {
     const temp = document.createElement('div');
     temp.classList.add(parentClass);
+    temp.classList.add('inactive');
     temp.setAttribute('id', `${parentClass}_${rowNum}`);
     generateChildTemplate(rowNum, childClass).forEach(child =>
       temp.appendChild(child)
@@ -44,14 +51,21 @@ const generateSourceColor = function(colors) {
   colors.forEach(color => {
     const temp = document.createElement('div');
     temp.classList.add('source');
-    temp.style['background-color'] = color;
+    temp.onclick = selectColor;
+    temp.style['background'] = color;
     sourcePlace.appendChild(temp);
   });
 };
 
-const makeRowActive = function(id) {
-  const children = document.querySelector(`#rows_${id}`).children;
-  Array.from(children).forEach(child => child.classList.remove('inactive'));
+const makeRowActive = id =>
+  document.querySelector(`#rows_${id}`).classList.remove('inactive');
+
+const makeRowInactive = id =>
+  document.querySelector(`#rows_${id}`).classList.add('inactive');
+
+const findActiveRow = function() {
+  const rows = Array.from(document.querySelectorAll('.rows'));
+  return rows.find(row => !row.classList.value.includes('inactive'));
 };
 
 const main = function() {
@@ -62,3 +76,77 @@ const main = function() {
 };
 
 window.onload = main;
+
+/////////////////////////////////////////////////
+
+const activateSources = function() {
+  const sources = document.querySelector('#source-place').children;
+  Array.from(sources).forEach(source => source.classList.remove('inactive'));
+};
+
+const selectColor = function() {
+  activateSources();
+  const target = event.target;
+  selectedColor = target.style.background;
+  target.classList.add('inactive');
+};
+
+const applySelectedColor = function() {
+  if (selectedColor === 'white') return;
+  const target = event.target;
+  target.style.background = selectedColor;
+  target.classList.add('shadow');
+};
+
+const findActiveHoles = function() {
+  const rows = Array.from(document.querySelectorAll('.rows'));
+  return rows.find(row => !row.classList.value.includes('inactive')).children;
+};
+
+const applyColor = function(id, num, color) {
+  const resultPlace = Array.from(document.querySelector(id).children);
+  const greyDiv = resultPlace.filter(child => !child.style.background);
+  for (let index = 0; index < num; index++) {
+    const child = greyDiv.shift();
+    child.style.background = color;
+  }
+};
+
+const fillResultField = function(id, result) {
+  applyColor(id, result[0], 'white');
+  applyColor(id, result[1], 'red');
+};
+
+const showCodeColor = function(rowId) {
+  const previousRow = Array.from(document.querySelector(rowId).children);
+  const codeHoles = document.querySelector('.code-row').children;
+  previousRow.forEach((row, index) => {
+    codeHoles[index].style.background = row.style.background;
+  });
+  shiftInstructionWindow(winMessage);
+};
+
+const showCheckResult = function({ result, activeRow, isCracked, gameOver }) {
+  makeRowInactive(activeRow - 1);
+  makeRowActive(activeRow);
+  if (gameOver) return shiftInstructionWindow(lossMessage);
+  fillResultField(`#result_${activeRow - 1}`, result);
+  if (isCracked) showCodeColor(`#rows_${activeRow - 1}`);
+};
+
+const submitColors = function() {
+  const activeHoles = findActiveHoles();
+  const colors = Array.from(activeHoles).map(hole => hole.style.background);
+  if (colors.includes('')) return alert('Please fill up the colors');
+  sendXHR('POST', 'submitColors', showCheckResult, JSON.stringify({ colors }));
+};
+
+const shiftInstructionWindow = function(message) {
+  document.querySelector('#quiteWindow').classList.remove('hide');
+  document.querySelector('#quiteWindow p').innerText = message;
+  document.querySelector('#playBoard').classList.add('inactive');
+  document.querySelector('#source-place').classList.add('inactive');
+  document.querySelector('#check').classList.add('hide');
+};
+
+const startNewGame = function() {};
