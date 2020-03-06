@@ -92,7 +92,9 @@ const selectColor = function() {
 };
 
 const applySelectedColor = function() {
-  if (selectedColor === 'white') return;
+  if (selectedColor === 'white') {
+    return;
+  }
   const target = event.target;
   target.style.background = selectedColor;
   target.classList.add('shadow');
@@ -127,17 +129,24 @@ const showCodeColor = function(rowId) {
 };
 
 const showCheckResult = function({ result, activeRow, isCracked, gameOver }) {
+  // const { result, activeRow, isCracked, gameOver } = response;
   makeRowInactive(activeRow - 1);
   makeRowActive(activeRow);
-  if (gameOver) return shiftInstructionWindow(lossMessage);
+  if (gameOver) {
+    return shiftInstructionWindow(lossMessage);
+  }
   fillResultField(`#result_${activeRow - 1}`, result);
-  if (isCracked) showCodeColor(`#rows_${activeRow - 1}`);
+  if (isCracked) {
+    showCodeColor(`#rows_${activeRow - 1}`);
+  }
 };
 
 const submitColors = function() {
   const activeHoles = findActiveHoles();
   const colors = Array.from(activeHoles).map(hole => hole.style.background);
-  if (colors.includes('')) return alert('Please fill up the colors');
+  if (colors.includes('')) {
+    return alert('Please fill up the colors');
+  }
   sendXHR('POST', 'submitColors', showCheckResult, JSON.stringify({ colors }));
 };
 
@@ -149,4 +158,6 @@ const shiftInstructionWindow = function(message) {
   document.querySelector('#check').classList.add('hide');
 };
 
-const startNewGame = function() {};
+const openNewGame = function() {
+  window.location.reload();
+};

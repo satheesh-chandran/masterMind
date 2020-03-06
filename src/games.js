@@ -1,16 +1,5 @@
 const { floor, random } = Math;
 
-// const sourceColors = [
-//   '#ff2121',
-//   '#a24040',
-//   '#2828f1',
-//   '#f5a106',
-//   '#08d208',
-//   '#7b0a7b',
-//   '#eaea0e',
-//   '#f952f9'
-// ];
-
 const sourceColors = [
   'red',
   'brown',
@@ -48,9 +37,13 @@ class Game {
     colors.forEach(color => this.codeColor.includes(color) && result[0]++);
     colors.forEach((color, index) => {
       color === this.codeColor[index] && result[0]-- && result[1]++;
-      if (result[1] === 5) this.isCracked = true;
+      if (result[1] === 5) {
+        this.isCracked = true;
+      }
     });
-    if (this.activeRow === 10) this.isGameOver = true;
+    if (this.activeRow === 10) {
+      this.isGameOver = true;
+    }
     this.activeRow++;
     return {
       result,
@@ -58,6 +51,10 @@ class Game {
       isCracked: this.isCracked,
       gameOver: this.isGameOver
     };
+  }
+
+  getCodeColor() {
+    return this.codeColor;
   }
 }
 
@@ -81,6 +78,16 @@ class Games {
 
   getColors() {
     return this.colors;
+  }
+
+  delete(id) {
+    const gameIndex = this.games.findIndex(game => game.id === id);
+    this.games.splice(gameIndex, 1);
+    return true;
+  }
+
+  getCodeColor(gameId) {
+    return this.findGame(gameId).getCodeColor();
   }
 
   checkColors(id, colors) {

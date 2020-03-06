@@ -1,4 +1,5 @@
 const request = require('supertest');
+// const sinon = require('sinon');
 const { app } = require('../src/routes');
 
 describe('GET', function() {

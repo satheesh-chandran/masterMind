@@ -19,14 +19,23 @@ const provideSourceColor = (req, res) => {
 
 const redirectionToStart = function(req, res, next) {
   const { session } = req.cookies;
-  if (!session) return res.redirect('/');
+  if (!session) {
+    return res.redirect('/');
+  }
   next();
 };
 
 const checkColors = function(req, res) {
   const { session } = req.cookies;
   const { colors } = req.body;
-  res.json(games.checkColors(session, colors));
+  const checkResult = games.checkColors(session, colors);
+  if (checkResult.gameOver) {
+    const codeColor = games.getCodeColor(session);
+    checkResult.code = codeColor;
+    games.delete(session);
+    res.clearCookie('session');
+  }
+  res.json(checkResult);
 };
 
 module.exports = {
