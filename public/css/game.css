@@ -8,7 +8,7 @@ body {
 
 #container {
   width: 100%;
-  height: 750px;
+  height: 680px;
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
@@ -23,7 +23,7 @@ body {
 }
 
 #playBoard {
-  width: 55%;
+  width: 60%;
   display: flex;
   background-image: linear-gradient(rgb(225, 236, 161), rgb(196, 212, 100));
 }
@@ -34,7 +34,7 @@ body {
   background-image: linear-gradient(rgb(249, 196, 105), rgb(246, 217, 167));
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   overflow-x: scroll;
 }
 
@@ -79,7 +79,7 @@ h1 {
 .hole {
   margin: 1%;
   background: white;
-  width: 10%;
+  width: 8.5%;
   box-shadow: inset 1px 1px 2px black;
 }
 
@@ -112,23 +112,43 @@ h1 {
   box-shadow: 1px 1px 5px black;
 }
 
+#contact,
 #source-place {
-  height: 8%;
-  width: 100%;
   display: flex;
   justify-content: space-evenly;
+  border-radius: 10px;
+  box-shadow: -2px 0px 10px 6px #2113136b;
+}
+
+#contact {
+  height: 70px;
+  width: 60%;
+  margin-left: 17px;
+  background-image: linear-gradient(rgb(225, 236, 161), rgb(196, 212, 100));
+}
+
+#source-place {
+  height: 50px;
+  width: 80%;
+  margin-top: 10px;
+  margin-left: 1%;
+  background-image: linear-gradient(rgb(249, 196, 105), rgb(246, 217, 167));
   flex-wrap: wrap;
 }
 
-.source {
-  margin: 2%;
-  height: 70%;
-  width: 8%;
-  border-radius: 50%;
-  box-shadow: 1px 1px 5px black;
+#check {
+  margin-top: 2.5%;
 }
 
 .shadow {
+  box-shadow: 1px 1px 5px black;
+}
+
+.source {
+  margin: 1%;
+  height: 70%;
+  width: 5.5%;
+  border-radius: 50%;
   box-shadow: 1px 1px 5px black;
 }
 
@@ -138,9 +158,8 @@ h1 {
 
 #instruction,
 #quiteWindow {
-  height: 45%;
   width: 80%;
-  margin: 10%;
+  margin-left: 10%;
   border-radius: 10px;
   background-image: linear-gradient(rgb(225, 236, 161), rgb(196, 212, 100));
   text-align: justify;
@@ -149,11 +168,17 @@ h1 {
   overflow: scroll;
 }
 
+#instruction {
+  height: 50%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 #quiteWindow {
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 12%;
+  height: 16%;
   margin-top: 0;
   margin-bottom: 0;
 }

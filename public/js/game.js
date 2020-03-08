@@ -52,7 +52,7 @@ const generateSourceColor = function(colors) {
     const temp = document.createElement('div');
     temp.classList.add('source');
     temp.onclick = selectColor;
-    temp.style['background'] = color;
+    temp.style.background = color;
     sourcePlace.appendChild(temp);
   });
 };
@@ -128,8 +128,8 @@ const showCodeColor = function(rowId) {
   shiftInstructionWindow(winMessage);
 };
 
-const showCheckResult = function({ result, activeRow, isCracked, gameOver }) {
-  // const { result, activeRow, isCracked, gameOver } = response;
+const showCheckResult = function(response) {
+  const { result, activeRow, isCracked, gameOver } = response;
   makeRowInactive(activeRow - 1);
   makeRowActive(activeRow);
   if (gameOver) {
