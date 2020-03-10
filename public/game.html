@@ -24,36 +24,38 @@
           <div class="result"></div>
         </div>
       </div>
-      <div id="statusBoard">
-        <h1>MASTERMIND</h1>
-        <div id="instruction">
-          <p>
-            Select the colors from bottom and place wherever you want to place
-            on the left part of the game board in the active row. If you are
-            done with placing the color click the check button.
-          </p>
-          <p>The result of your prediction will shown as described below</p>
-          <p>
-            <span style="color: red;">Red</span> color indicate the color placed
-            in right position.
-          </p>
-          <p>
-            <span style="color: white;">White</span> color indicate the color
-            placed is present, but not in the right position.
-          </p>
-          <p>
-            <strong> Note:</strong> these do not line up with your code color.
-          </p>
-        </div>
-        <div class="hide" id="quiteWindow">
-          <p>You won..!</p>
-          <button onclick="openNewGame()">Play Again</button>
-        </div>
+
+      <div id="contact">
+        <div id="source-place"></div>
+        <button onclick="submitColors()" id="check">Check</button>
       </div>
     </div>
-    <div id="contact">
-      <div id="source-place"></div>
-      <button onclick="submitColors()" id="check">Check</button>
+
+    <div id="statusBoard">
+      <h1>MASTERMIND</h1>
+      <div id="instruction">
+        <p>
+          Select the colors from bottom and place wherever you want to place on
+          the left part of the game board in the active row. If you are done
+          with placing the color click the check button.
+        </p>
+        <p>The result of your prediction will shown as described below</p>
+        <p>
+          <span style="color: red;">Red</span> color indicate the color placed
+          in right position.
+        </p>
+        <p>
+          <span style="color: white;">White</span> color indicate the color
+          placed is present, but not in the right position.
+        </p>
+        <p>
+          <strong> Note:</strong> these do not line up with your code color.
+        </p>
+      </div>
+      <div class="hide" id="quiteWindow">
+        <p>You won..!</p>
+        <button onclick="openNewGame()">Play Again</button>
+      </div>
     </div>
   </body>
 </html>

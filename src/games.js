@@ -1,5 +1,3 @@
-const { floor, random } = Math;
-
 const sourceColors = [
   'red',
   'brown',
@@ -11,8 +9,6 @@ const sourceColors = [
   'pink'
 ];
 
-const getRandomNumber = (min, max) => floor(random() * (max - min) + min);
-
 class Game {
   constructor(id) {
     this.id = id;
@@ -22,7 +18,7 @@ class Game {
     this.isGameOver = false;
   }
 
-  addColor() {
+  addColor(getRandomNumber) {
     const colorCopy = sourceColors.slice();
     while (this.codeColor.length < 5) {
       const colorIndex = getRandomNumber(0, colorCopy.length);
@@ -45,12 +41,10 @@ class Game {
       this.isGameOver = true;
     }
     this.activeRow++;
-    return {
-      result,
-      activeRow: this.activeRow,
-      isCracked: this.isCracked,
-      gameOver: this.isGameOver
-    };
+    const checkStatus = { result, activeRow: this.activeRow };
+    checkStatus.isCracked = this.isCracked;
+    checkStatus.gameOver = this.isGameOver;
+    return checkStatus;
   }
 
   getCodeColor() {
@@ -64,10 +58,10 @@ class Games {
     this.colors = sourceColors.slice();
   }
 
-  add(id) {
+  add(id, getRandomNumber) {
     const game = new Game(id);
-    game.addColor();
-    console.log(game);
+    game.addColor(getRandomNumber);
+    // console.log(game);
     this.games.push(game);
     return true;
   }

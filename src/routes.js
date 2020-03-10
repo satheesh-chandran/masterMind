@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const { Games } = require('./games');
 
 const {
   provideSourceColor,
@@ -8,6 +9,7 @@ const {
 } = require('./handlers');
 
 const app = express();
+app.locals.games = new Games();
 
 app.use(cookieParser());
 app.use(express.static('public', { index: 'game.html' }));

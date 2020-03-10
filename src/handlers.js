@@ -1,19 +1,18 @@
+const { floor, random } = Math;
 const crypto = require('crypto');
-const { Games } = require('./games');
 
-const games = new Games();
+const getRandomNumber = (min, max) => floor(random() * (max - min) + min);
 
-const idProvider = () =>
-  crypto
-    .createHash('sha1')
-    .update(`${+new Date()}`)
-    .digest('hex')
-    .slice(0, 10);
+const idProvider = () => {
+  const hash = crypto.createHash('sha1').update(`${+new Date()}`);
+  return hash.digest('hex').slice(0, 10);
+};
 
 const provideSourceColor = (req, res) => {
   const sessionId = idProvider();
   res.cookie('session', sessionId);
-  games.add(sessionId);
+  const games = req.app.locals.games;
+  games.add(sessionId, getRandomNumber);
   res.json(games.getColors());
 };
 
@@ -25,15 +24,23 @@ const redirectionToStart = function(req, res, next) {
   next();
 };
 
+const responseToCheckColors = function(session, checkResult, games, res) {
+  const codeColor = games.getCodeColor(session);
+  checkResult.code = codeColor;
+  games.delete(session);
+  res.clearCookie('session');
+};
+
 const checkColors = function(req, res) {
   const { session } = req.cookies;
   const { colors } = req.body;
+  if (!colors) {
+    return res.send('Bad request');
+  }
+  const games = req.app.locals.games;
   const checkResult = games.checkColors(session, colors);
   if (checkResult.gameOver) {
-    const codeColor = games.getCodeColor(session);
-    checkResult.code = codeColor;
-    games.delete(session);
-    res.clearCookie('session');
+    responseToCheckColors(session, checkResult, res);
   }
   res.json(checkResult);
 };
@@ -41,5 +48,6 @@ const checkColors = function(req, res) {
 module.exports = {
   provideSourceColor,
   redirectionToStart,
-  checkColors
+  checkColors,
+  idProvider
 };

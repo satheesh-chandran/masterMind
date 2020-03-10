@@ -1,5 +1,4 @@
 const request = require('supertest');
-// const sinon = require('sinon');
 const { app } = require('../src/routes');
 
 describe('GET', function() {
@@ -38,3 +37,14 @@ describe('GET', function() {
     });
   });
 });
+
+// describe('POST for submitColors', function() {
+//   it('should return the check result for the given colors', done => {
+//     request(app)
+//       .post('/submitColors')
+//       .set('Cookie', 'abcd')
+//       .send({ colors: ['red', 'brown', 'blue', 'orange', 'green'] })
+//       .expect('Content-Type', /json/)
+//       .expect(200, done);
+//   });
+// });
