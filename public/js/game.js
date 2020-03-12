@@ -123,13 +123,11 @@ const fillResultField = function(id, result) {
   applyColor(id, result[1], 'red');
 };
 
-const showCodeColor = function(rowId) {
-  const previousRow = Array.from(querySelector(rowId).children);
+const showCodeColor = function(colors) {
   const codeHoles = querySelector('.code-row').children;
-  previousRow.forEach((row, index) => {
-    codeHoles[index].style.background = row.style.background;
+  colors.forEach((color, index) => {
+    codeHoles[index].style.background = color;
   });
-  shiftInstructionWindow(winMessage);
 };
 
 const showCheckResult = function(response) {
@@ -137,12 +135,15 @@ const showCheckResult = function(response) {
   makeRowInactive(activeRow - 1);
   makeRowActive(activeRow);
   if (gameOver) {
+    showCodeColor(response.code);
     return shiftInstructionWindow(lossMessage);
   }
   fillResultField(`#result_${activeRow - 1}`, result);
-  if (isCracked) {
-    showCodeColor(`#rows_${activeRow - 1}`);
-  }
+  if (!isCracked) return;
+  const previousRow = querySelector(`#rows_${activeRow - 1}`).children;
+  const colors = Array.from(previousRow).map(row => row.style.background);
+  showCodeColor(colors);
+  shiftInstructionWindow(winMessage);
 };
 
 const submitColors = function() {

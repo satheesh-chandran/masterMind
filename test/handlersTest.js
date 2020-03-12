@@ -85,7 +85,7 @@ describe('POST for submitColors', function() {
     };
   });
 
-  it('should return the check result for the given colors', done => {
+  it('should clear the Cookie if the game is over', done => {
     request(app)
       .post('/submitColors')
       .set('Cookie', 'session=a')
