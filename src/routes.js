@@ -5,11 +5,13 @@ const { Games } = require('./games');
 const {
   provideSourceColor,
   redirectionToStart,
-  checkColors
+  checkColors,
+  idProvider
 } = require('./handlers');
 
 const app = express();
 app.locals.games = new Games();
+app.locals.idProvider = idProvider;
 
 app.use(cookieParser());
 app.use(express.static('public', { index: 'game.html' }));

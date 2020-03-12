@@ -1,7 +1,11 @@
 const request = require('supertest');
 const { app } = require('../src/routes');
+const sinon = require('sinon');
 
 describe('GET', function() {
+  before(() => {
+    app.locals.idProvider = () => 'a';
+  });
   describe('GET game files', function() {
     it('should give game.html for url /', done => {
       request(app)
@@ -38,13 +42,31 @@ describe('GET', function() {
   });
 });
 
-// describe('POST for submitColors', function() {
-//   it('should return the check result for the given colors', done => {
-//     request(app)
-//       .post('/submitColors')
-//       .set('Cookie', 'abcd')
-//       .send({ colors: ['red', 'brown', 'blue', 'orange', 'green'] })
-//       .expect('Content-Type', /json/)
-//       .expect(200, done);
-//   });
-// });
+describe('POST for submitColors', function() {
+  before(() => {
+    app.locals.idProvider = () => 'a';
+  });
+  it('should return the check result for the given colors', done => {
+    request(app)
+      .post('/submitColors')
+      .set('Cookie', 'session=a')
+      .send({ colors: ['red', 'brown', 'blue', 'orange', 'green'] })
+      .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
+
+  it('should redirect to game page if Cookie is not present', done => {
+    request(app)
+      .post('/submitColors')
+      .send({ colors: ['red', 'brown', 'blue', 'orange', 'green'] })
+      .expect(302, done);
+  });
+
+  it('should response as bad request if the color field is not found', done => {
+    request(app)
+      .post('/submitColors')
+      .set('Cookie', 'session=a')
+      .send({})
+      .expect(400, done);
+  });
+});

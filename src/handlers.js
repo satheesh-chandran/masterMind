@@ -9,7 +9,7 @@ const idProvider = () => {
 };
 
 const provideSourceColor = (req, res) => {
-  const sessionId = idProvider();
+  const sessionId = req.app.locals.idProvider();
   res.cookie('session', sessionId);
   const games = req.app.locals.games;
   games.add(sessionId, getRandomNumber);
@@ -35,7 +35,7 @@ const checkColors = function(req, res) {
   const { session } = req.cookies;
   const { colors } = req.body;
   if (!colors) {
-    return res.send('Bad request');
+    return res.status(400).send('Bad request');
   }
   const games = req.app.locals.games;
   const checkResult = games.checkColors(session, colors);
