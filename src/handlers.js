@@ -40,7 +40,7 @@ const checkColors = function(req, res) {
   const games = req.app.locals.games;
   const checkResult = games.checkColors(session, colors);
   if (checkResult.gameOver) {
-    responseToCheckColors(session, checkResult, res);
+    responseToCheckColors(session, checkResult, games, res);
   }
   res.json(checkResult);
 };

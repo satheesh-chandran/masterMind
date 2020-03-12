@@ -67,6 +67,31 @@ describe('POST for submitColors', function() {
       .post('/submitColors')
       .set('Cookie', 'session=a')
       .send({})
+      .expect(/Bad request/)
       .expect(400, done);
+  });
+
+  before(() => {
+    app.locals.games = {
+      checkColors: sinon.fake.returns({ gameOver: true }),
+      getCodeColor: sinon.fake.returns([
+        'red',
+        'brown',
+        'blue',
+        'orange',
+        'green'
+      ]),
+      delete: sinon.fake.returns(true)
+    };
+  });
+
+  it('should return the check result for the given colors', done => {
+    request(app)
+      .post('/submitColors')
+      .set('Cookie', 'session=a')
+      .send({ colors: ['red', 'brown', 'blue', 'orange', 'black'] })
+      .expect('Content-Type', /json/)
+      .expect(/green/)
+      .expect(200, done);
   });
 });
