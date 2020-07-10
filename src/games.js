@@ -61,6 +61,7 @@ class Games {
   add(id, getRandomNumber) {
     const game = new Game(id);
     game.addColor(getRandomNumber);
+    console.log(game);
     this.games.push(game);
     return true;
   }

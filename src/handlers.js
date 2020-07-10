@@ -8,7 +8,7 @@ const idProvider = () => {
   return hash.digest('hex').slice(0, 10);
 };
 
-const provideSourceColor = (req, res) => {
+const provideSourceColor = function(req, res) {
   const sessionId = req.app.locals.idProvider();
   res.cookie('session', sessionId);
   const games = req.app.locals.games;
